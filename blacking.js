@@ -77,6 +77,9 @@ var Blacking = function(text, user) {
 
   if (nothingMatched) {
     return text;
+  } else {
+    // add remaining text to the end
+    result += text.substring(endOfPreviousMatch);
   }
 
   return result;
