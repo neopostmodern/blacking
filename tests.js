@@ -33,6 +33,10 @@ describe('Main', function () {
     Blacking("Hello [+group =█]{World, things (many) - and more!}", { groups: []})
       .should.equal("Hello █████, ██████ (████) - ███ ████!");
   });
+  it('Blacking protects markdown special characters', function () {
+    Blacking("Hello [+group =*]{World, things (many) - and more!}", { groups: []})
+      .should.equal("Hello \\*\\*\\*\\*\\*, \\*\\*\\*\\*\\*\\* (\\*\\*\\*\\*) - \\*\\*\\* \\*\\*\\*\\*!");
+  });
 });
 
 describe('Rule Parser', function () {

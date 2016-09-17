@@ -1,5 +1,7 @@
 "use strict";
 
+const MARKDOWN_SPECIAL_CHARACTERS = ['*'];
+
 /**
  * @return {string}
  */
@@ -74,6 +76,11 @@ Blacking.ruleParser = function(rulesString) {
           console.warn(`Duplicate declaration of blacking character: "${ ruleString.substr(1) }" replaces "${ results.blackingCharacter }"`)
         }
         results.blackingCharacter = ruleString.substr(1);
+        
+        if (MARKDOWN_SPECIAL_CHARACTERS.includes(results.blackingCharacter)) {
+          results.blackingCharacter = "\\" + results.blackingCharacter;
+        }
+        
         break;
       case '':
         // allow empty rule sets
@@ -85,4 +92,4 @@ Blacking.ruleParser = function(rulesString) {
   return results;
 };
 
-export default Blacking;
+module.exports = Blacking;
