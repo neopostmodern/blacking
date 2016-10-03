@@ -44,6 +44,11 @@ var Blacking = function(text, user) {
 };
 
 Blacking.test = function (rules, groups) {
+  // accept anybody if there were no rules
+  if (rules === undefined || rules === null) {
+    return true;
+  }
+  
   if (typeof rules === 'string') {
     rules = Blacking.ruleParser(rules);
   }
