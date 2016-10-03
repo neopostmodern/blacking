@@ -20,21 +20,7 @@ var Blacking = function(text, user) {
 
     result += text.substring(endOfPreviousMatch, match.index);
 
-    let shouldBeBlacked = false;
-
-    if (rules.allowed.length || rules.denied.length) {
-      if (user.groups) {
-        if (rules.allowed.some((group) => user.groups.includes(group)) || rules.allowed.length == 0) {
-          if (rules.denied.some((group) => user.groups.includes(group))) {
-            shouldBeBlacked = true;
-          }
-        } else {
-          shouldBeBlacked = true;
-        }
-      } else {
-        shouldBeBlacked = true;
-      }
-    }
+    let shouldBeBlacked = !Blacking.test(rules, user.groups);
 
     if (shouldBeBlacked) {
       if (rules.blackingCharacter) {
@@ -55,6 +41,28 @@ var Blacking = function(text, user) {
   }
 
   return result;
+};
+
+Blacking.test = function (rules, groups) {
+  if (typeof rules === 'string') {
+    rules = Blacking.ruleParser(rules);
+  }
+  
+  if (rules.allowed.length || rules.denied.length) {
+    if (groups) {
+      if (rules.allowed.some((group) => groups.includes(group)) || rules.allowed.length == 0) {
+        if (rules.denied.some((group) => groups.includes(group))) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+  
+  return true;
 };
 
 Blacking.ruleParser = function(rulesString) {
